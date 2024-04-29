@@ -4,6 +4,7 @@ import random
 import numpy as np
 
 #여러 도시들의 경로들을 모아둔 route클래스 구현 
+
 class route:
    
     def __init__(self): 
@@ -79,7 +80,7 @@ class A_star: #맨처음 원점에서 가장 짧은 것들을 선택하고 그 �
         self.route_count = route_count
         self.data = data
         for i in range(0,route_count):
-            init_list = []
+            init_list = [[0, 0]]
             self.coordinate.append(init_list)
             self.index_list.append(self.initial_list2)
 
