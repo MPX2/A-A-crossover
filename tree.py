@@ -85,7 +85,7 @@ class A_star: #맨처음 원점에서 가장 짧은 것들을 선택하고 그 �
     data =[]#엑셀 데이터를 sort한후 저장된 리스트 -> x,y로 이루어짐
     node_data = [] # data리스트를 노드화 시켜서 저장한 리스트 -> x,y,index로 이루어짐
 
-    
+
     def __init__(self,data, route_count): #매개변수로 route_count = 한세대당 개체개수와 genetic_count = 유전알고리즘을 몇세대 반복할건지 받음 근데 이건 
         #트리가 아니라 ga클래스 따로 구현해서 거기서 구현해야됨
         ##data는 원점으로부터 짧은순서대로 오름차순 정렬되어있어야됨
@@ -102,6 +102,13 @@ class A_star: #맨처음 원점에서 가장 짧은 것들을 선택하고 그 �
     
     def __getitem__(self, index):
         return self.route_list[index]
+    
+    def make_index(self,route):
+        index_list = []
+        for i in range(0,len(route.city_route)):
+            index_list.append(route.city_route[i].get_index())
+        return index_list
+        
 
     def A_star(self): #에이스타 알고리즘으로 경로를 정하는 경로를 정하는 과정 
         for i in range(0,self.route_count):
@@ -203,19 +210,34 @@ class A_star: #맨처음 원점에서 가장 짧은 것들을 선택하고 그 �
 
 ###########################################################################
     
+#데이터로드하고 리스트에 저장
 
-#에이스타 실행부분 
-data = pd.read_csv("2024_AI_TSP.csv") #파일가져오고 
-
-data_list = [] #맨해튼 거리기준으로 정렬된 배열을 저장할리스트 하나만듬 
+data = pd.read_csv("2024_AI_TSP.csv") 
+data_list = [] 
 for i in range(0,len(data)):
-    data_list.append([data.iat[i,0],data.iat[i,1]]) #데이터를 엑셀에서 가져오고 
+    data_list.append([data.iat[i,0],data.iat[i,1]]) 
 
-data_list.sort(key=lambda x: abs(x[1])+abs(x[0])) #원점으로부터 맨해튼거리의 합을 기준으로 오름차순 정렬
-tree = A_star(data_list,50)#에이스타 트리를 만들고 
+#원점으로부터 맨해튼거리의 합을 기준으로 오름차순 정렬
+data_list.sort(key=lambda x: abs(x[1])+abs(x[0])) 
+
+#data_list를 노드화 하는 과정
+node_list = []
+for i in range(0,len(data)):
+    newNode = Node(data_list[i][0], data_list[i][1],i)
+    node_list.append(newNode)
+    
+#에이스타 알고리즘 진행부분 
+tree = A_star(data_list,30)
+tree.A_star()
 
 
-tree.A_star() #에이스타 알고리즘을 수행하는부분 
+#방문한 인덱스번호를 순서대로 저장한 배열 = index_list
+index_list = tree.make_index(tree.route_list[0])
+print(index_list)
+
+
+#필요한게 방문순서가 저장된 리스트와, 원래 맨해튼거리로 오름차순배열되어있는 리스트하나 
+#앞에서부터 index_list와 data_
 
 
 distance = 9999
