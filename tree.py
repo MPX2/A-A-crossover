@@ -65,10 +65,10 @@ class Node:
     def add_child(self, child): #하나의끝 좌표에 자식 
         self.children.append(child)
 
-    def uclid_distance(self, node):
+    def uclid_distance(self, node): #해당 노드까지 유클리드 거리반환
         return math.sqrt(abs(self.x - node.x)**2 + abs(self.y - node.y)**2)
 
-    def manhattan_distance(self):
+    def manhattan_distance(self): #노드의 맨해튼 거리 반환
         return abs(self.x) + abs(self.y)
     def get_index(self):
         return self.index
@@ -119,7 +119,7 @@ class A_star: #맨처음 원점에서 가장 짧은 것들을 선택하고 그 �
                             continue
                         p_p_list = current_Node.uclid_distance(copy_array[k]) #실제 다음 후보노드까지의 거리계산 
                         heuristic_value = copy_array[k].get_heuristic()#휴리스틱계산
-                        fn_value = p_p_list + heuristic_value #f(N)계산
+                        fn_value = 2*p_p_list + heuristic_value #f(N)계산
                         if fn_value > max:
                             next_index = k
                             max = fn_value
@@ -136,7 +136,7 @@ class A_star: #맨처음 원점에서 가장 짧은 것들을 선택하고 그 �
                             continue
                         p_p_list = current_Node.uclid_distance(copy_array[k]) #실제 다음 후보노드까지의 거리계산 
                         heuristic_value = copy_array[k].get_heuristic()#휴리스틱계산
-                        fn_value = p_p_list + heuristic_value #f(N)계산
+                        fn_value = 2*p_p_list + heuristic_value #f(N)계산
                         if fn_value > max:
                             next_index = k
                             max = fn_value
@@ -153,7 +153,7 @@ class A_star: #맨처음 원점에서 가장 짧은 것들을 선택하고 그 �
                             continue
                         p_p_list = current_Node.uclid_distance(copy_array[k]) #실제 다음 후보노드까지의 거리계산 
                         heuristic_value = copy_array[k].get_heuristic()#휴리스틱계산
-                        fn_value = p_p_list + heuristic_value #f(N)계산
+                        fn_value = 2*p_p_list + heuristic_value #f(N)계산
                         if fn_value > max:
                             next_index = k
                             max = fn_value
@@ -170,7 +170,7 @@ class A_star: #맨처음 원점에서 가장 짧은 것들을 선택하고 그 �
                             continue
                         p_p_list = current_Node.uclid_distance(copy_array[k]) #실제 다음 후보노드까지의 거리계산 
                         heuristic_value = copy_array[k].get_heuristic()#휴리스틱계산
-                        fn_value = p_p_list + heuristic_value #f(N)계산
+                        fn_value = 2*p_p_list + heuristic_value #f(N)계산
                         if fn_value > max:
                             next_index = k
                             max = fn_value
@@ -217,7 +217,7 @@ tree = A_star(data_list,50)#에이스타 트리를 만들고
 
 tree.A_star() #에이스타 알고리즘을 수행하는부분 
 
-'''
+
 distance = 9999
 index = -1
 for i in range(0,tree.route_count):
@@ -225,7 +225,7 @@ for i in range(0,tree.route_count):
         index = i
         distance = tree.route_list[i].calmulate_route_length()
 print(distance)
-'''
+
 
 
 
@@ -255,12 +255,13 @@ def a_star_crossover(route1, route2,num): #임의의 난수 뽑아서 인덱스 
         route1.city_route[i] = sort_list[i]
     
 #에이스타 크로스오버 두가지 구현했는데 
-#첫번째 주석처리되어있는건 997개점 중에 임의로 num개를뽑아서 그 점들을 인덱스순으로 정렬하는것
-#두번째 주석처리 안되어 있는건 임의의점 하나를 골라서 거기서부터 num개의 점들을 인덱스 순으로 정렬하는것 
+#첫번째 주석처리되어있는건 997개점 중에 임의로 num개를뽑아서 그 점들을 인덱스순으로 정렬하는것->전체적인 리스트의 순서를 최적화 해줌 
+#두번째 주석처리 안되어 있는건 임의의점 하나를 골라서 거기서부터 num개의 점들을 인덱스 순으로 정렬하는것 -> local에서 순서를 최적화 해줌 
 
     
 
 
-    
-    
+
+
+#fn_value = 2*p_p_list + heuristic_value #f(N)계산 유클리드 거리에 weight주어서 fn에서의 비율을 높임
     
